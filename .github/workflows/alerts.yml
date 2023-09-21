@@ -1,0 +1,43 @@
+name: Alerts as Code
+on:
+  workflow_call:
+
+env:
+  PROJECT: ${{ github.event.repository.name }}
+  CLOUD_INFRASTRUCTURE_REPO: ${{ secrets.CLOUD_INFRASTRUCTURE_REPO }} # the repo this lives in
+
+jobs:
+  alerts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out Alerts as Code repository code
+        uses: actions/checkout@v3.3.0
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ env.CLOUD_INFRASTRUCTURE_REPO }}
+          ref: main
+          path: tools
+
+      - name: Check out ${{ env.PROJECT }} repository code
+        uses: actions/checkout@v3.3.0
+        with:
+          token: ${{ secrets.PAT }}
+          repository: "certinoltd/${{ env.PROJECT }}"
+          path: ${{ env.PROJECT }}
+
+      # Setup Python (faster than using Python container)
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        if: steps.cache-pipenv.outputs.cache-hit != 'true'
+        run: |
+          pip install -r tools/alert/requirements.txt
+      
+      - name: Run Alerts as Code
+        run: |
+          python tools/alert/runalerts.py --dir ${{ env.PROJECT }}/alerts --project ${{ env.PROJECT }}
