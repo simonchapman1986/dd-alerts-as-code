@@ -1,0 +1,27 @@
+{
+	"name": "Simons Sample Monitor X",
+	"type": "query alert",
+	"query": "sum(last_15m):sum:<service>.increment{*} by {environment}.as_count() < 0.5",
+	"message": "Some sample message has changed",
+	"tags": [],
+	"options": {
+		"thresholds": {
+			"critical": 0.5,
+			"critical_recovery": 1
+		},
+		"notify_audit": true,
+		"require_full_window": true,
+		"notify_no_data": true,
+		"renotify_interval": 10,
+		"include_tags": true,
+		"no_data_timeframe": 30,
+		"new_group_delay": 60,
+		"renotify_statuses": [
+			"alert",
+			"no data"
+		],
+		"escalation_message": "Some escalation message",
+		"silenced": {}
+	},
+	"priority": 3
+}

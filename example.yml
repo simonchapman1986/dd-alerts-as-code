@@ -1,0 +1,15 @@
+name: Alerts
+run-name: ${{ github.actor }} Alerts
+on:
+  pull_request:
+    branches-ignore:
+      - "!main"
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  alerts:
+    uses: simonchapman1986/dd-alerts-as-code/.github/workflows/alerts.yml@main
+    secrets: inherit
