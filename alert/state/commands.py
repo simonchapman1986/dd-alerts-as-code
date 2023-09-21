@@ -21,7 +21,7 @@ def create_client():
     return ApiClient(configuration)
 
 
-class CertinoMonitor(Monitor):
+class AlertMonitor(Monitor):
 
     def __init__(self, **kwargs):
         new_kwargs = kwargs
@@ -69,7 +69,7 @@ class GetLocalCommand(Command):
                         loaded_file["options"]["escalation_message"] = f"{loaded_file['options']['escalation_message']} {self.notify}"
 
                 alerts_list.append(
-                    CertinoMonitor(**loaded_file)
+                    AlertMonitor(**loaded_file)
                 )
             f.close()
         return alerts_list

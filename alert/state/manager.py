@@ -4,7 +4,7 @@ from pprint import pprint, pformat
 from . import stderr, stdout
 
 from typing import List, Dict, Literal
-from state.commands import GetLocalCommand, GetRemoteCommand, PostCommand, UpdateCommand, DeleteCommand, CertinoMonitor, Monitor
+from state.commands import GetLocalCommand, GetRemoteCommand, PostCommand, UpdateCommand, DeleteCommand, AlertMonitor, Monitor
 
 
 class MonitorStateManager:
@@ -45,7 +45,7 @@ class MonitorStateManager:
             monitor_map[id] = monitor
         return monitor_map
 
-    def monitor_diff(self, local: CertinoMonitor, remote: Monitor):        
+    def monitor_diff(self, local: AlertMonitor, remote: Monitor):        
         built_local = {
             "message": local.get("message"),
             "name": local.get("name"),
